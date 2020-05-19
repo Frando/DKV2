@@ -41,7 +41,6 @@ int main(int argc, char *argv[])
     tests.push_back(new test_finance);
     tests.push_back(new test_properties);
     tests.push_back(new test_letterTemplate);
-    tests.push_back(new tst_db);
     tests.push_back(new test_csv);
 
     srand(time(0));

@@ -16,10 +16,10 @@ void initTestDb()
     QDir().mkdir(QString("..\\data"));
     if (QFile::exists(testDbFilename))
         QFile::remove(testDbFilename);
-    QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE", testCon);
+    QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
     db.setDatabaseName(testDbFilename);
     QVERIFY(db.open());
-    QSqlQuery enableRefInt(db);
+    QSqlQuery enableRefInt;
     QVERIFY2(enableRefInt.exec("PRAGMA foreign_keys = ON"),
              enableRefInt.lastError().text().toLocal8Bit().data());
     QVERIFY2( QFile::exists(testDbFilename), "create database failed." );
@@ -28,9 +28,6 @@ void initTestDb()
 void cleanupTestDb()
 {
     QSqlDatabase::database().removeDatabase(testCon);
-    QSqlDatabase::database().close();
-    if (QFile::exists(testDbFilename))
-        QFile::remove(testDbFilename);
     QDir().rmdir("..\\data");
     QVERIFY2( (QFile::exists(testDbFilename) == false), "destroy database failed." );
 }
