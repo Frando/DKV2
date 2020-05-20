@@ -17,7 +17,7 @@ void test_dkdbhelper::initTestCase()
 void test_dkdbhelper::init()
 {   LOG_CALL;
     initTestDb();
-    create_DK_databaseContent(testDb());
+    create_DK_databaseContent();
 }
 
 void test_dkdbhelper::cleanup()
@@ -29,7 +29,7 @@ void test_dkdbhelper::test_querySingleValueInvalidQuery()
 {   LOG_CALL;
     QString sql ("SELECT NOTEXISTINGFIELD FROM NOTEXISTINGTABLE WHERE NOTEXISTINGFIELD='0'");
     QVariant result;
-    result = ExecuteSingleValueSql(sql, testDb());
+    result = ExecuteSingleValueSql(sql);
     QVERIFY2(QVariant::Invalid == result.type(),
              "Invalid single value sql has poditiv result");
 }
@@ -40,12 +40,12 @@ void test_dkdbhelper::test_querySingleValue()
         .appendTable(dbtable("t")
             .append(dbfield("id", QVariant::Int))
             .append(dbfield("f")));
-    s.createDb(testDb());
+    s.createDb();
     TableDataInserter tdi(s["t"]);
     tdi.setValue("id", 1);
     tdi.setValue("f", "Hallo");
-    tdi.InsertData(testDb());
-    QVariant hallo = ExecuteSingleValueSql("SELECT [f] FROM [t] WHERE id=1", testDb());
+    tdi.InsertData();
+    QVariant hallo = ExecuteSingleValueSql("SELECT [f] FROM [t] WHERE id=1");
     QVERIFY2(hallo.toString() == "Hallo", "ExecuteSingleValueSql failed");
 }
 
@@ -55,15 +55,15 @@ void test_dkdbhelper::test_querySingleValue_multipleResults()
         .appendTable(dbtable("t")
             .append(dbfield("id", QVariant::Int))
             .append(dbfield("f")));
-    s.createDb(testDb());
+    s.createDb();
     TableDataInserter tdi(s["t"]);
     tdi.setValue("id", 1);
     tdi.setValue("f", "Hallo");
-    tdi.InsertData(testDb());
+    tdi.InsertData();
     tdi.setValue("id", 1);
     tdi.setValue("f", "Hallo1");
-    tdi.InsertData(testDb());
-    QVariant hallo = ExecuteSingleValueSql("SELECT [f] FROM [t] WHERE id=1", testDb());
+    tdi.InsertData();
+    QVariant hallo = ExecuteSingleValueSql("SELECT [f] FROM [t] WHERE id=1");
     QVERIFY2(hallo.type() == QVariant::Invalid , "ExecuteSingleValueSql failed");
 }
 
@@ -75,23 +75,23 @@ void test_dkdbhelper::test_berechneZusammenfassung()
 //            .append(dbfield("Wert", QVariant::Double))
 //            .append(dbfield("thesaurierend", QVariant::Bool))
 //            .append(dbfield("aktiv", QVariant::Bool)));
-//    s.createDb(QSqlDatabase::database(testDb()));
+//    s.createDb(QSqlDatabase::database());
 
 //    TableDataInserter tdi(dkdbstructur["Vertraege"]);
 //    tdi.setValue("Betrag", 100.);
 //    tdi.setValue("Wert", 101.);
 //    tdi.setValue("aktiv", true);
 //    tdi.setValue("thesaurierend", true);
-//    tdi.InsertData(QSqlDatabase::database(testDb()));
-//    tdi.InsertData(QSqlDatabase::database(testDb()));
+//    tdi.InsertData(QSqlDatabase::database());
+//    tdi.InsertData(QSqlDatabase::database());
 //    tdi.setValue("Betrag", 200.);
 //    tdi.setValue("Wert", 201.);
 //    tdi.setValue("aktiv", false);
 //    tdi.setValue("thesaurierend", true);
-//    tdi.InsertData(QSqlDatabase::database(testDb()));
-//    tdi.InsertData(QSqlDatabase::database(testDb()));
+//    tdi.InsertData(QSqlDatabase::database());
+//    tdi.InsertData(QSqlDatabase::database());
 //    DbSummary dbs;
-//    calculateSummary(dbs, testDb());
+//    calculateSummary(dbs);
 //    QCOMPARE(dbs.BetragAktive, 200);
 //    QVERIFY2(dbs.BetragAktive == 100., "Betrag der Aktiven Verträge ist falsch");
 //    QVERIFY(dbs.AnzahlAktive == 2);
@@ -106,9 +106,9 @@ void test_dkdbhelper::test_ensureTable_existingTable()
         .appendTable(dbtable("t")
             .append(dbfield("id", QVariant::Int))
             .append(dbfield("f")));
-    s.createDb(testDb());
+    s.createDb();
 
-    QVERIFY2(ensureTable(s["t"], testDb()), "ensure table for existing table failed");
+    QVERIFY2(ensureTable(s["t"]), "ensure table for existing table failed");
 }
 
 void test_dkdbhelper::test_ensureTable_notExistingTable()
@@ -117,11 +117,11 @@ void test_dkdbhelper::test_ensureTable_notExistingTable()
         .appendTable(dbtable("t")
             .append(dbfield("id", QVariant::Int))
             .append(dbfield("f")));
-    s.createDb(testDb());
+    s.createDb();
 
     dbtable notExistingTable("s");
     notExistingTable.append(dbfield("id"));
 
-    QVERIFY2( ensureTable(notExistingTable, testDb()), "ensure table for not existing table failed");
-    QVERIFY2(tableExists("s", testDb()), "ensure Table of not existing table did not create the table");
+    QVERIFY2( ensureTable(notExistingTable), "ensure table for not existing table failed");
+    QVERIFY2(tableExists("s"), "ensure Table of not existing table did not create the table");
 }

@@ -31,9 +31,9 @@ dbtable dbstructure::operator[](const QString& name) const
 }
 
 bool dbstructure::createDb(QSqlDatabase db) const
-{   LOG_CALL_W(db.databaseName());
+{   LOG_CALL_W(db.connectionName());
     QSqlQuery q(db);
-    for(dbtable table :getTables())
+    for(dbtable table : getTables())
     {
         if(!ensureTable(table, db))
         {

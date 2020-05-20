@@ -36,6 +36,9 @@ int main(int argc, char *argv[])
     };
 
     std::vector<QObject*> tests;
+    tests.push_back(new tst_db);
+    tests.push_back(new test_sqlhelper);
+    tests.push_back(new test_dkdbhelper);
     tests.push_back(new test_appConfig);
     tests.push_back(new test_sqlhelper);
     tests.push_back(new test_finance);

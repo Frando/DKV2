@@ -27,20 +27,17 @@ void initTestDb()
 
 void cleanupTestDb()
 {
-    QSqlDatabase::database().removeDatabase(testCon);
+    QSqlDatabase::database().close();
+    QSqlDatabase::removeDatabase("qt_sql_default_connection");
+    if (QFile::exists(testDbFilename))
+        QFile::remove(testDbFilename);
     QDir().rmdir("..\\data");
     QVERIFY2( (QFile::exists(testDbFilename) == false), "destroy database failed." );
 }
 
-QSqlDatabase testDb()
-{
-    return QSqlDatabase::database(testCon);
-}
-
-
 int tableRecordCount(QString tname)
 {   LOG_CALL_W(tname);
-    QSqlQuery q(testDb());
+    QSqlQuery q;
     if (q.exec("SELECT COUNT(*) FROM " + tname)) {
         q.first();
         qDebug() << "#Datensätze: " << q.record().value(0);
@@ -53,12 +50,13 @@ int tableRecordCount(QString tname)
 
 bool dbHasTable(const QString tname)
 {   LOG_CALL_W(tname);
-    return testDb().tables().contains(tname);
+    qDebug() << QSqlDatabase::database().tables();
+    return QSqlDatabase::database().tables().contains(tname);
 }
 
 bool dbTableHasField(const QString tname, const QString fname)
 {   LOG_CALL_W(tname +": " +fname);
-    QSqlRecord r = testDb().record(tname);
+    QSqlRecord r = QSqlDatabase::database().record(tname);
     if( r.field(fname).isValid())
         return true;
     return false;
