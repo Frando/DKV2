@@ -355,6 +355,8 @@ void MainWindow::on_action_create_contract_for_creditor_triggered()
     ui->leKennung->setText( proposeKennung());
     if( ui->stackedWidget->currentIndex() == PersonListIndex)
         set_creditors_combo_by_id(getIdFromCreditorsList());
+    else if( ui->stackedWidget->currentIndex() == newPersonIndex)
+        set_creditors_combo_by_id((lastCreditorAddedId));
     else
         set_creditors_combo_by_id(-1);
     Contract cd; // this is to get the defaults of the class definition
@@ -447,7 +449,7 @@ int  MainWindow::save_creditor()
         return -1;
     }
 
-    return kid;
+    return  lastCreditorAddedId = kid;
 }
 void MainWindow::empty_create_creditor_form()
 {   LOG_CALL;
@@ -484,24 +486,28 @@ void MainWindow::on_cancel_clicked()
 void MainWindow::on_action_save_contact_go_contract_triggered()
 {   LOG_CALL;
     int kid = save_creditor();
-    if(  kid != -1)
-    {
+    if(  kid != -1) {
         empty_create_creditor_form();
         on_action_create_contract_for_creditor_triggered();
     }
+    else
+        QMessageBox::critical(this, "Schwerwiegender Fehler", "Der Kreditgeber konnte nicht gespeichert werden");
 }
 void MainWindow::on_action_save_contact_go_creditors_triggered()
 {   LOG_CALL;
-    if( save_creditor() != -1)
-    {
+    if( save_creditor() != -1) {
         empty_create_creditor_form();
         on_action_Liste_triggered();
     }
+    else
+        QMessageBox::critical(this, "Schwerwiegender Fehler", "Der Kreditgeber konnte nicht gespeichert werden");
 }
 void MainWindow::on_action_save_contact_go_new_creditor_triggered()
 {   LOG_CALL;
     if( save_creditor() != -1)
         empty_create_creditor_form();
+    else
+        QMessageBox::critical(this, "Schwerwiegender Fehler", "Der Kreditgeber konnte nicht gespeichert werden");
 }
 
 // neuer Vertrag

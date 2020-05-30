@@ -12,12 +12,10 @@
 
 struct busycursor
 {
-    busycursor()
-    {
+    busycursor() {
         QGuiApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
     };
-    ~busycursor()
-    {
+    ~busycursor() {
         QGuiApplication::restoreOverrideCursor();
     }
 };
@@ -171,11 +169,11 @@ private:
     QString prepare_overview_page(Uebersichten u);
     QMenu* menuSaveKreditorAnd;
     QMenu* menuSaveContractAnd;
+    int lastCreditorAddedId = 0;
 protected:
     void timerEvent(QTimerEvent* te) override
     {
-        if( splash)
-        {
+        if( splash) {
             splash->finish(this);
             delete splash;
         }
