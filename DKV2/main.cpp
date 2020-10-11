@@ -144,17 +144,16 @@ void setGermanUi()
 
 int main(int argc, char *argv[])
 {
-    initLogging();
-    LOG_CALL;
     QLocale locale(QLocale::German, QLocale::LatinScript, QLocale::Germany);
     QLocale::setDefault(locale); // do before starting the event loop
-
-    qInfo() << "DKV2 started " << QDate::currentDate().toString("dd.MM.yyyy") << "-" << QTime::currentTime().toString();
-
 
     QApplication a(argc, argv);
     a.setOrganizationName("4-MHS"); // used to store our settings
     a.setApplicationName("DKV2");
+
+    initLogging();
+    LOG_CALL;
+    qInfo() << "DKV2 started " << QDate::currentDate().toString("dd.MM.yyyy") << "-" << QTime::currentTime().toString();
 
     setGermanUi();
 
