@@ -46,20 +46,16 @@ popd
 
 ################## Package using linuxdeployqt #################
 pushd ${BUILDDIR}
-# pushd app
+mkdir -p app
+pushd app
 # icns2png ${SOURCEDIR}/app/images/patternpaint.icns -x
 # cp patternpaint_256x256x32.png patternpaint.png
-# cp ${SOURCEDIR}/app/patternpaint.desktop ./
-# popd
+cp ${SOURCEDIR}/res/logo256.png DKV2.png
+cp ${SOURCEDIR}/res/DKV2.desktop ./
+mv ../DKV2 ./
 
-
-# TODO: this should be done automagically though the qt build tools?
-# mkdir -p app/lib
-# cp libblinky/libblinky.so.1 app/lib
-
-unset LD_LIBRARY_PATH # Remove too old Qt from the search path; TODO: Move inside the linuxdeployqt AppImage
-
-#LINUXDEPLOYQT_OPTS=-unsupported-allow-new-glibc
+unset LD_LIBRARY_PATH # Remove too old Qt from the search path
+# LINUXDEPLOYQT_OPTS=-unsupported-allow-new-glibc
 PATH=${QTDIR}/bin:${PATH} ${LINUXDEPLOYQT} DKV2 -bundle-non-qt-libs ${LINUXDEPLOYQT_OPTS}
 PATH=${QTDIR}/bin:${PATH} ${LINUXDEPLOYQT} DKV2 -appimage ${LINUXDEPLOYQT_OPTS}
 
