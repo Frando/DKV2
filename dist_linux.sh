@@ -24,7 +24,7 @@ LINUXDEPLOYQT=`pwd`/linuxdeployqt-continuous-x86_64.AppImage
 SOURCEDIR=`pwd`/DKV2
 
 # Location to build DKV2
-BUILDDIR='build-dist-linux'
+BUILDDIR=`pwd`/build-dist-linux
 
 
 ################### Extract the version info ###################
@@ -44,23 +44,19 @@ ${QMAKE} ${SOURCEDIR}/DKV2.pro \
 #${MAKE} clean
 ${MAKE} -j6
 
-popd
-
 ################## Package using linuxdeployqt #################
-pushd ${BUILDDIR}
 mkdir -p app
 pushd app
-# icns2png ${SOURCEDIR}/app/images/patternpaint.icns -x
-# cp patternpaint_256x256x32.png patternpaint.png
 cp ${SOURCEDIR}/res/logo256.png dkv2.png
 cp ${SOURCEDIR}/res/DKV2.desktop ./
-mv ../DKV2 ./
+mv ${BUILDDIR}/DKV2 ./
+popd
 
 unset LD_LIBRARY_PATH # Remove too old Qt from the search path
 # LINUXDEPLOYQT_OPTS=-unsupported-allow-new-glibc
-PATH=${QTDIR}/bin:${PATH} ${LINUXDEPLOYQT} DKV2 -bundle-non-qt-libs ${LINUXDEPLOYQT_OPTS}
-PATH=${QTDIR}/bin:${PATH} ${LINUXDEPLOYQT} DKV2 -appimage ${LINUXDEPLOYQT_OPTS}
+PATH=${QTDIR}/bin:${PATH} ${LINUXDEPLOYQT} app/DKV2 -bundle-non-qt-libs ${LINUXDEPLOYQT_OPTS}
+PATH=${QTDIR}/bin:${PATH} ${LINUXDEPLOYQT} app/DKV2 -appimage ${LINUXDEPLOYQT_OPTS}
 
-tar -czf DKV2-${VERSION}-x86_64.tar.gz DKV2-${VERSION}-x86_64.AppImage
-
-popd
+ARTIFCACT_FILENAME="DKV2-${VERSION}-x86_64.tar.gz"
+tar -czf ${ARTIFCACT_FILENAME} DKV2-${VERSION}-x86_64.AppImage
+echo "Created ${BUILDDIR}/${ARTIFCACT_FILENAME}"
