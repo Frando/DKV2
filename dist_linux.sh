@@ -29,7 +29,9 @@ BUILDDIR='build-dist-linux'
 
 ################### Extract the version info ###################
 # source ./gitversion.sh
-VERSION='0.0.1'
+GIT_VERSION=`git describe --always --tags 2> /dev/null`
+VERSION=`echo ${GIT_VERSION} | sed 's/-/\./g' | sed 's/g//g'`
+
 
 ################## Build DKV2 ##########################
 mkdir -p ${BUILDDIR}
