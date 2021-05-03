@@ -50,7 +50,7 @@ mkdir -p app
 pushd app
 # icns2png ${SOURCEDIR}/app/images/patternpaint.icns -x
 # cp patternpaint_256x256x32.png patternpaint.png
-cp ${SOURCEDIR}/res/logo256.png DKV2.png
+cp ${SOURCEDIR}/res/logo256.png dkv2.png
 cp ${SOURCEDIR}/res/DKV2.desktop ./
 mv ../DKV2 ./
 
