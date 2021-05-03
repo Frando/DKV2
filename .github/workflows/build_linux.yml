@@ -28,11 +28,19 @@ jobs:
       uses: jurplel/install-qt-action@v2
       with:
         modules: 'qtcharts'
-    - name: build linux
+    - name: Build and package for Linux
       run: ./dist_linux.sh
-      #working-directory: firmware
     - name: Save artificat
       uses: actions/upload-artifact@v2
       with:
         name: Appimage
         path: build-dist-linux/DKV2-*-x86_64.tar.gz
+     - name: Release
+        uses: softprops/action-gh-release@v1
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          files: |
+            build-dist-linux/DKV2-*-x86_64.tar.gz
+            LICENSE
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

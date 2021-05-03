@@ -29,9 +29,8 @@ BUILDDIR=`pwd`/build-dist-linux
 
 ################### Extract the version info ###################
 # source ./gitversion.sh
-GIT_VERSION=`git describe --always --tags 2> /dev/null`
-VERSION=`echo ${GIT_VERSION} | sed 's/-/\./g' | sed 's/g//g'`
-
+GIT_VERSION=`git rev-parse --short HEAD`
+VERSION=${GIT_VERSION}
 
 ################## Build DKV2 ##########################
 mkdir -p ${BUILDDIR}
@@ -58,5 +57,5 @@ PATH=${QTDIR}/bin:${PATH} ${LINUXDEPLOYQT} app/DKV2 -bundle-non-qt-libs ${LINUXD
 PATH=${QTDIR}/bin:${PATH} ${LINUXDEPLOYQT} app/DKV2 -appimage ${LINUXDEPLOYQT_OPTS}
 
 ARTIFCACT_FILENAME="DKV2-${VERSION}-x86_64.tar.gz"
-tar -czf ${ARTIFCACT_FILENAME} DKV2-${VERSION}-x86_64.AppImage
+tar -czf ${ARTIFCACT_FILENAME} DKV2-${GIT_VERSION}-x86_64.AppImage
 echo "Created ${BUILDDIR}/${ARTIFCACT_FILENAME}"
