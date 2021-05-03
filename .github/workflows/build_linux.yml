@@ -26,6 +26,8 @@ jobs:
       run: chmod a+x linuxdeployqt-continuous-x86_64.AppImage
     - name: Install Qt
       uses: jurplel/install-qt-action@v2
+      with:
+        modules: 'qtcharts'
     - name: build linux
       run: ./dist_linux.sh
       #working-directory: firmware
