@@ -244,7 +244,7 @@ jobs:
         # - {
         #     name: "macOS Latest x64", artifact: "macOS-x64.zip",
         #     os: macos-latest
-          }
+        # }
     needs: release
 
     steps:
